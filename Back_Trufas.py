@@ -52,4 +52,18 @@ def totalizando_produto(valor, qtd):
     total_final = total.translate(totaltrans(',.', '.,'))
     return total_final
 
-def total_pedidos(valor)
+def totalizando_produto(valor, qtd):
+    valora = str(valor).replace(',', '.')
+    total = float(valora) * int(qtd)
+    total = f'{total:.2f}'
+    totaltrans = total.maketrans
+    total_final = total.translate(totaltrans(',.', '.,'))
+    return total_final
+
+def totalizando_produto(valor, qtd):
+    valora = str(valor).replace(',', '.')
+    total = float(valora) * int(qtd)
+    total = f'{total:.2f}'
+    totaltrans = total.maketrans
+    total_final = total.translate(totaltrans(',.', '.,'))
+    return total_final
