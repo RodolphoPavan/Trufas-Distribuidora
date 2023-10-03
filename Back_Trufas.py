@@ -51,3 +51,5 @@ def totalizando_produto(valor, qtd):
     totaltrans = total.maketrans
     total_final = total.translate(totaltrans(',.', '.,'))
     return total_final
+
+def total_pedidos(valor)
