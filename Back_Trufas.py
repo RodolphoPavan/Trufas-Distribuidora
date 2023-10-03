@@ -4,7 +4,7 @@ from datetime import datetime
 
 def conectar_bd():
     global banco
-    banco = sqlite3.connect(r'C:\\Users\\Cliente\\OneDrive\\Área de Trabalho\\Projeto Software Product - RP Distribuidora\\Programa\\Trufas_Distribuidora.db')
+    banco = sqlite3.connect(r'C:\Users\Cliente\OneDrive\Área de Trabalho\Projeto Software Product - RP Distribuidora\Programa\Trufas_Distribuidora.db')
     cursor = banco.cursor()
     return cursor
 

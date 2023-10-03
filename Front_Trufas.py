@@ -21,6 +21,10 @@ class sistema():
                 janela_inicio.close()
                 sistema.adicionar_pedido()
                 break
+            elif event == 'Consultar Pedido':
+                janela_inicio.close()
+                sistema.consultar_pedido()
+                break
         janela_inicio.close()
 
     def adicionar_pedido():
@@ -40,6 +44,7 @@ class sistema():
                   [sg.Button('Registrar Pedido'), sg.Button('Sair')]]
 
         janela_novo_pedido = sg.Window('Novo Pedido', layout, resizable=True)
+
         while True:
             event, values = janela_novo_pedido.read()
             if event in (sg.WIN_CLOSED, 'Sair'):
@@ -63,7 +68,7 @@ class sistema():
                   [sg.Text('Digite o nome do cliente:'), sg.InputText(size=(25, 0), k='-CLIENTE-')],
                   [sg.Text('Digite o número do pedido:'), sg.InputText(size=(25, 0), k='-PEDIDO-')],
                   [sg.Button('Consultar', k='-CONSULTAR-')],
-                  [sg.Table(values=info_consulta, headings=heading, key='-TABELA-', auto_size_columns=True, display_row_numbers=False, alternating_row_color='white', justification='center')],
+                  [sg.Table(values=info_consulta, headings=heading, key='-TABELA-', auto_size_columns=True, display_row_numbers=False, alternating_row_color='blue', justification='center')],
                   [sg.Button('Sair')]]
 
         janela_consultar_pedido = sg.Window('Consultar Pedido', layout, resizable=True)
@@ -93,6 +98,5 @@ class sistema():
                 break
         janela_consultar_pedido.close()
         sistema.janela_inicio()
-
 
 sistema.janela_inicio()
