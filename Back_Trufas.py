@@ -52,18 +52,26 @@ def totalizando_produto(valor, qtd):
     total_final = total.translate(totaltrans(',.', '.,'))
     return total_final
 
-def totalizando_produto(valor, qtd):
-    valora = str(valor).replace(',', '.')
-    total = float(valora) * int(qtd)
-    total = f'{total:.2f}'
-    totaltrans = total.maketrans
-    total_final = total.translate(totaltrans(',.', '.,'))
-    return total_final
 
-def totalizando_produto(valor, qtd):
-    valora = str(valor).replace(',', '.')
-    total = float(valora) * int(qtd)
-    total = f'{total:.2f}'
-    totaltrans = total.maketrans
-    total_final = total.translate(totaltrans(',.', '.,'))
-    return total_final
+def consultar_tudo():
+    cursor = conectar_bd()
+    cursor.execute('SELECT * FROM pedidos')
+    consultafetch = cursor.fetchall()
+    consultafinal = [list(ele) for ele in consultafetch]
+    return consultafinal
+
+
+def consultar_cliente(cliente):
+    cursor = conectar_bd()
+    cursor.execute(f"SELECT * FROM pedidos WHERE cliente = '{cliente}'")
+    clientefetch = cursor.fetchall()
+    retornoconsultacliente = [list(ele) for ele in clientefetch]
+    return retornoconsultacliente
+
+
+def consultar_pedido(pdd):
+    cursor = conectar_bd()
+    cursor.execute(f"SELECT * FROM pedidos WHERE pedido = '{pdd}'")
+    pedidofetch = cursor.fetchall()
+    retornoconsultapedido = [list(ele) for ele in pedidofetch]
+    return retornoconsultapedido
