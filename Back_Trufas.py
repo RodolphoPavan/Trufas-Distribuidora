@@ -53,12 +53,6 @@ def totalizando_produto(valor, qtd):
     return total_final
 
 
-def totalizando_pedido(valor, qtd):
-    valora = str(valor).replace(',', '.')
-    total_valor = ''
-    pass
-
-
 def consultar_tudo():
     cursor = conectar_bd()
     cursor.execute('SELECT * FROM pedidos')

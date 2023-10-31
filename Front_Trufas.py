@@ -97,20 +97,20 @@ class sistema():
                 pedido_selecionado = values['-TABELA-'][0]
                 seleção = info_consulta[pedido_selecionado]
                 janela_consultar_pedido.close()
-                sistema.atualizar_excluir_pedido(seleção)
+                sistema.atualizar_pedido(seleção)
                 break
 
         janela_consultar_pedido.close()
         sistema.janela_inicio()
 
-    def atualizar_excluir_pedido(linha_selecionada):
+    def atualizar_pedido(linha_selecionada):
         antigo = linha_selecionada
         layout = [[sg.Text('Data:'), sg.InputText(f'{linha_selecionada[1]}', k='-NOVA DATA-')],
                   [sg.Text('Cliente:'), sg.InputText(f'{linha_selecionada[2]}', k='-NOVO CLIENTE-')],
                   [sg.Text('Produto:'), sg.InputText(f'{linha_selecionada[3]}', k='-NOVO PRODUTO-')],
                   [sg.Text('Valor:'), sg.InputText(f'{linha_selecionada[4]}', k='-NOVO VALOR-')],
                   [sg.Text('Quantidade:'), sg.InputText(f'{linha_selecionada[5]}', k='-NOVA QTD-')],
-                  [sg.Button('Atualizar Pedido'),],
+                  [sg.Button('Atualizar Pedido')],
                   [sg.Button('Sair')]]
 
         janela_editar = sg.Window('Editar Pedido', layout, resizable=True, modal=True)
@@ -122,15 +122,9 @@ class sistema():
                 retorno = Back_Trufas.atualizar_pedido(antigo, values)
                 if retorno == 'Valores iguais':
                     sg.popup('Valores iguais, não houve alteração!')
+                    break
                 else:
                     sg.popup('Pedido atualizado!')
-                    break
-            elif event == 'Excluir Produto':
-                retorno = Back_Trufas.excluir_linha(antigo)
-                if retorno == 'Pedido não encontrado':
-                    sg.popup('Produto não encontrado! Verifique novamente!')
-                else:
-                    sg.popup('Produto excluido!')
                     break
 
         janela_editar.close()
