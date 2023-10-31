@@ -41,13 +41,13 @@ class sistema():
                             display_row_numbers=False,
                             alternating_row_color='blue',
                             justification='center')],
-                  [sg.Button('Registrar Pedido'), sg.Button('Sair')]]
+                  [sg.Button('Registrar Pedido'), sg.Button('Voltar')]]
 
         janela_novo_pedido = sg.Window('Novo Pedido', layout, resizable=True)
 
         while True:
             event, values = janela_novo_pedido.read()
-            if event in (sg.WIN_CLOSED, 'Sair'):
+            if event in (sg.WIN_CLOSED, 'Voltar'):
                 break
             elif event == 'Adicionar Produto':
                 total_produto = Back_Trufas.totalizando_produto((values['-VALOR-']), values['-QTD-'])
@@ -68,14 +68,14 @@ class sistema():
                   [sg.Text('Digite o nome do cliente:'), sg.InputText(size=(25, 0), k='-CLIENTE-')],
                   [sg.Text('Digite o número do pedido:'), sg.InputText(size=(25, 0), k='-PEDIDO-')],
                   [sg.Button('Consultar', k='-CONSULTAR-')],
-                  [sg.Table(values=info_consulta, headings=heading, key='-TABELA-', auto_size_columns=True, display_row_numbers=False, alternating_row_color='blue', justification='center')],
-                  [sg.Button('Sair')]]
+                  [sg.Table(values=info_consulta, headings=heading, key='-TABELA-', auto_size_columns=True, display_row_numbers=False, alternating_row_color='blue', justification='center', enable_events=True)],
+                  [sg.Button('Voltar')]]
 
-        janela_consultar_pedido = sg.Window('Consultar Pedido', layout, resizable=True)
-
+        janela_consultar_pedido = sg.Window('Consultar Pedido', layout, resizable=True, modal=True)
+        seleção = ''
         while True:
             event, values = janela_consultar_pedido.read()
-            if event in (sg.WIN_CLOSED, 'Sair'):
+            if event in (sg.WIN_CLOSED, 'Voltar'):
                 break
             elif '-CONSULTAR-' in event:
                 if values['-CLIENTE-'] != '':
@@ -93,10 +93,48 @@ class sistema():
                 else:
                     sg.popup('Digite nome do cliente ou número do pedido!')
                     janela_consultar_pedido['-TABELA-'].update(values=info_consulta)
-            elif event == 'Ok':
-                sg.popup('Ok')
+            elif event == '-TABELA-':
+                pedido_selecionado = values['-TABELA-'][0]
+                seleção = info_consulta[pedido_selecionado]
+                janela_consultar_pedido.close()
+                sistema.atualizar_excluir_pedido(seleção)
                 break
+
         janela_consultar_pedido.close()
         sistema.janela_inicio()
+
+    def atualizar_excluir_pedido(linha_selecionada):
+        antigo = linha_selecionada
+        layout = [[sg.Text('Data:'), sg.InputText(f'{linha_selecionada[1]}', k='-NOVA DATA-')],
+                  [sg.Text('Cliente:'), sg.InputText(f'{linha_selecionada[2]}', k='-NOVO CLIENTE-')],
+                  [sg.Text('Produto:'), sg.InputText(f'{linha_selecionada[3]}', k='-NOVO PRODUTO-')],
+                  [sg.Text('Valor:'), sg.InputText(f'{linha_selecionada[4]}', k='-NOVO VALOR-')],
+                  [sg.Text('Quantidade:'), sg.InputText(f'{linha_selecionada[5]}', k='-NOVA QTD-')],
+                  [sg.Button('Atualizar Pedido'),],
+                  [sg.Button('Sair')]]
+
+        janela_editar = sg.Window('Editar Pedido', layout, resizable=True, modal=True)
+        while True:
+            event, values = janela_editar.read()
+            if event in (sg.WIN_CLOSED, 'Sair'):
+                break
+            elif event == 'Atualizar Pedido':
+                retorno = Back_Trufas.atualizar_pedido(antigo, values)
+                if retorno == 'Valores iguais':
+                    sg.popup('Valores iguais, não houve alteração!')
+                else:
+                    sg.popup('Pedido atualizado!')
+                    break
+            elif event == 'Excluir Produto':
+                retorno = Back_Trufas.excluir_linha(antigo)
+                if retorno == 'Pedido não encontrado':
+                    sg.popup('Produto não encontrado! Verifique novamente!')
+                else:
+                    sg.popup('Produto excluido!')
+                    break
+
+        janela_editar.close()
+        sistema.consultar_pedido()
+
 
 sistema.janela_inicio()

@@ -53,6 +53,12 @@ def totalizando_produto(valor, qtd):
     return total_final
 
 
+def totalizando_pedido(valor, qtd):
+    valora = str(valor).replace(',', '.')
+    total_valor = ''
+    pass
+
+
 def consultar_tudo():
     cursor = conectar_bd()
     cursor.execute('SELECT * FROM pedidos')
@@ -75,3 +81,33 @@ def consultar_pedido(pdd):
     pedidofetch = cursor.fetchall()
     retornoconsultapedido = [list(ele) for ele in pedidofetch]
     return retornoconsultapedido
+
+
+def atualizar_pedido(dados, valores):
+    cursor = conectar_bd()
+    print(valores)
+    #----Lista Antiga-----
+    pdd = dados[0]
+    data = dados[1]
+    cliente = dados[2]
+    produto = dados[3]
+    valor = dados[4]
+    qtd = dados[5]
+    valores_antigo = [(pdd, data, cliente, produto, valor, qtd)]
+
+    #----Lista Nova-----
+    data_novo = valores['-NOVA DATA-']
+    cliente_novo = valores['-NOVO CLIENTE-']
+    produto_novo = valores['-NOVO PRODUTO-']
+    valor_novo = valores['-NOVO VALOR-']
+    qtd_novo = int(valores['-NOVA QTD-'])
+    valores_novo = [(pdd, data_novo, cliente_novo, produto_novo, valor_novo, qtd_novo)]
+
+    print(valores_antigo, valores_novo)
+
+    if valores_antigo == valores_novo:
+        return 'Valores iguais'
+    else:
+        cursor.execute(f"UPDATE pedidos SET data = '{data_novo}', cliente =  '{cliente_novo}', produto = '{produto_novo}', valor = '{valor_novo}', quantidade = '{qtd_novo}' WHERE pedido = '{pdd}' AND produto = '{produto}'")
+        banco.commit()
+        return 'OK'
