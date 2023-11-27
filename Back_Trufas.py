@@ -79,7 +79,6 @@ def consultar_pedido(pdd):
 
 def atualizar_pedido(dados, valores):
     cursor = conectar_bd()
-    print(valores)
     #----Lista Antiga-----
     pdd = dados[0]
     data = dados[1]
@@ -97,11 +96,34 @@ def atualizar_pedido(dados, valores):
     qtd_novo = int(valores['-NOVA QTD-'])
     valores_novo = [(pdd, data_novo, cliente_novo, produto_novo, valor_novo, qtd_novo)]
 
-    print(valores_antigo, valores_novo)
-
     if valores_antigo == valores_novo:
         return 'Valores iguais'
     else:
         cursor.execute(f"UPDATE pedidos SET data = '{data_novo}', cliente =  '{cliente_novo}', produto = '{produto_novo}', valor = '{valor_novo}', quantidade = '{qtd_novo}' WHERE pedido = '{pdd}' AND produto = '{produto}'")
         banco.commit()
         return 'OK'
+
+
+def excluir_pedido(pdd):
+    cursor = conectar_bd()
+    try:
+        cursor.execute(f"DELETE FROM pedidos WHERE pedido = '{pdd}'")
+        banco.commit()
+        return 'Ok'
+    except:
+        return 'Pedido não encontrado'
+
+
+def excluir_linha(dados):
+    pdd = dados[0]
+    data = dados[1]
+    cliente = dados[2]
+    produto = dados[3]
+    valor = dados[4]
+    qtd = dados[5]
+    cursor = conectar_bd()
+
+    #try:
+    cursor.execute(f"DELETE FROM pedidos WHERE pedido= '{pdd}' AND data= '{data}' AND cliente='{cliente}' AND produto='{produto}' AND valor='{valor}' AND quantidade='{qtd}'")
+    banco.commit()
+    return 'Ok'
